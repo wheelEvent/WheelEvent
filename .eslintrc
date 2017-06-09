@@ -1,0 +1,7 @@
+"rules": {
+	"indent": 0,
+	"linebreak-style": 0,
+	"max-len":0,
+	"no-unused-vars":1,
+	"valid-jsdoc":1
+}
