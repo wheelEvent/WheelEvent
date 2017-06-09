@@ -73,7 +73,7 @@
 	}
 
 	/**
-	 * Le code JS personnalisé commence ici
+	 * App JS comes here
 	 */
 	function loginWithProvider(provider) {
 		try {
