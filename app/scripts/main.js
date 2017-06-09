@@ -75,45 +75,27 @@
 	/**
 	 * App JS comes here
 	 */
-	function loginWithProvider(provider) {
-		try {
-			firebase.auth().signInWithPopup(provider).then(function(result) {
-				// This gives you a Facebook Access Token. You can use it to access the Facebook API.
-				var token = result.credential.accessToken;
-				// The signed-in user info.
-				var user = result.user;
-				// ...
-				console.info('logged successfully', user);
-			}).catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				// The email of the user's account used.
-				var email = error.email;
-				// The firebase.auth.AuthCredential type that was used.
-				var credential = error.credential;
-				// ...
-				console.warn('logged failed');
-			});
-		} catch (e) {
-			console.error(e);
-			document.getElementById('load').innerHTML = 'Error facebook login, check the console.';
-		}
+	var loadedScript = 0;
+	var scriptToLoad = [
+		'/scripts/get.js',
+		'/scripts/push.js',
+		'/scripts/app.js'
+	];
+	var waitAllScriptToBeLoaded = function(i) {
+		return function(data, textStatus, jqxhr) {
+			if (textStatus.toLowerCase() !== 'success') {
+				console.warn('Error loading ' + scriptToLoad[i], data, textStatus, jqxhr);
+			}
+			if (textStatus.toLowerCase() === 'success') {
+				console.info(scriptToLoad[i] + ' loaded successfully');
+				loadedScript++;
+				if (loadedScript === scriptToLoad.length) {
+					app.init();
+				}
+			}
+		};
+	};
+	for (let i = scriptToLoad.length - 1; i >= 0; i--) {
+		$.getScript(scriptToLoad[i], waitAllScriptToBeLoaded(i));
 	}
-
-	$('#loginWithFacebook').click(function loginWithFacebook() {
-		var provider = new firebase.auth.FacebookAuthProvider();
-		loginWithProvider(provider);
-	});
-	$('#loginWithGoogle').click(function loginWithGoogle() {
-		var provider = new firebase.auth.GoogleAuthProvider();
-		loginWithProvider(provider);
-	});
-	$('#logout').click(function logout() {
-		firebase.auth().signOut().then(function() {
-			console.info('Sign-out successful.');
-		}).catch(function(error) {
-			console.warn('An error happened.', error);
-		});
-	});
 })();
