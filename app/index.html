@@ -12,7 +12,7 @@
         authDomain: "wheelevent-94cfb.firebaseapp.com",
         databaseURL: "https://wheelevent-94cfb.firebaseio.com",
         projectId: "wheelevent-94cfb",
-        storageBucket: "wheelevent-94cfb.appspot.com",
+        //storageBucket: "wheelevent-94cfb.appspot.com",
         messagingSenderId: "834336828374"
       };
       firebase.initializeApp(config);
@@ -66,7 +66,7 @@
 
         try {
           let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+          let features = ['auth', 'database', 'messaging'].filter(feature => typeof app[feature] === 'function');
           document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
         } catch (e) {
           console.error(e);
