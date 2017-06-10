@@ -154,23 +154,3 @@
 	};
 	window.push = wheelEventPush;
 })();
-
-/**
-Base:
-	Nom
-	Description
-	Prix
-	Public
-Type:
-	Rassemblement indépendant
-	Rassemblement de Club
-	Jour de course
-	Week-end de course
-	Autre (?)
-Date:
-	Date et durée
-Organisateur:
-	Voir “Utilisateur”
-Lieu:
-	Voir “Lieu”
- */
