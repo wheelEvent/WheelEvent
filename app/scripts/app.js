@@ -1,3 +1,7 @@
+/**
+ * @TODO
+ * - we should create new *.js file for each big page to avoid Cthulhu code ...
+ */
 (function() {
 	'use strict';
 	var wheelEvent = {
