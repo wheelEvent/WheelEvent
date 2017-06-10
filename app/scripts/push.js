@@ -58,7 +58,8 @@
 		/**
 		 * Permet de créer un événement
 		 * @param  {string}   _creator userId provided by wheelEventGet.currentUserId
-		 * @param  {object}   _where   object provided by wheelEventGet.*Place*
+		 * @param  {number}   _latitude  latitude from https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_geolocation
+		 * @param  {number}   _longitude longitude from https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_geolocation
 		 * @param  {Date}     _from    object Date javascript at the beginnning of the event
 		 * @param  {Date}     _to      object Date javascript at the end of the event
 		 * @param  {Array}    _what    ['Rassemblement indépendant', 'Rassemblement de Club', 'Jour de course', 'Week-end de course']
@@ -68,8 +69,8 @@
 		 * @param  {string}   _name    event's name, no line-break
 		 * @param  {Function} callback called when done, with object's event or false if can't create event
 		 */
-		createEvent(_creator, _where, _from, _to, _what, _public, _price, _desc, _name, callback) {
-			// @TODO after wheelEventGet.*Place*
+		createEvent(_creator, _latitude, _longitude, _from, _to, _what, _public, _price, _desc, _name, callback) {
+			// @TODO
 		},
 		/**
 		 * return an object with method addPriceTag, editPriceTag, deletePriceTag
@@ -144,7 +145,7 @@
 					this.data[def] = false;
 					return true;
 				};
-				this.getPriceTag = function(){
+				this.getPriceTag = function() {
 					return this.data;
 				};
 			}
