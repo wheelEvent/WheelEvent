@@ -91,6 +91,8 @@
 				loadedScript++;
 				if (loadedScript === scriptToLoad.length) {
 					app.init();
+					// delete loader once app.js is initiated
+					$('body').addClass('loaded');
 				}
 			}
 		};
@@ -99,11 +101,3 @@
 		$.getScript(scriptToLoad[i], waitAllScriptToBeLoaded(i));
 	}
 })();
-
-	$(document).ready(function() {
-	
-	setTimeout(function(){
-		$('body').addClass('loaded');
-	}, 3000);
-	
-});

@@ -44,16 +44,17 @@
   "eslintConfig": {
     "extends": "google",
     "env": {
-        "browser": true,
-        "node": true
+      "browser": true,
+      "node": true
     },
-    "globals":{
-      "firebase":true,
-      "$":true,
-      "app":true
+    "globals": {
+      "firebase": true,
+      "$": true,
+      "app": true
     }
   },
   "dependencies": {
+    "bootstrap": "^4.0.0-alpha.6",
     "jquery": "^3.2.1"
   }
 }
