@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WheelEvent</title>
+
+    <link rel="stylesheet" href="/styles/main.css">
     <!-- Firebase init -->
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
     <script>
@@ -39,6 +41,13 @@
     </style>
   </head>
   <body>
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+
+    </div>
     <div id="message">
       <h2>Welcome</h2>
       <h1>Firebase Hosting Setup Complete</h1>
