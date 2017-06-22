@@ -1,28 +1,147 @@
 /**
- * @TODO
- * - we should create new *.js file for each big page to avoid Cthulhu code ...
+ * @NOTE
+ * - Create new *.js file for each big page to avoid Cthulhu code ...
+ *  -> see main.js, var scriptToLoad
  */
 (function() {
 	'use strict';
+	// ctrl+k+3 for better view
+	/**
+	 * Initialize les objet principaux de la vue
+	 * Usage :
+		 * 	$(element).wheelEventInitialize('maSuperPage', {
+		 *		onRender: function(){
+		 *			// action lors du render terminé de l'element
+		 *		},
+		 *		onChangePage: function() {
+		 *			// action lors de la suppression terminé de l'élément
+		 *		},
+		 * 		mustBeConnected: false // @TODO vérifie que l'user est connecté avant d'afficher la page
+		 *	});
+	 *	$(element).trigger('render');
+	 * @param  {Object} method pour les trigger onRender et onChangePage
+	 */
+	$.fn.wheelEventInitialize = function(logName = 'noname', options = {}) {
+		console.info('wheelEventInitialize', this);
+		if (logName.constructor !== String) {
+			console.warn('logName must be a String');
+			return;
+		}
+		if (options.constructor !== Object) {
+			console.warn('options must be a Object');
+			return;
+		}
+		this.data('logName', logName);
+		/**
+		 * Processus de changement d'élément sur la vue :
+		 * this == $(element)
+		 * oldPage == element actuellement présent dans la page
+		 *
+		 * quand $(element).trigger('render');
+		 * 	this.render
+		 * 		oldPage.beforeChangePage
+		 * 		oldPage.slideUp
+		 * 		->	oldPage.onChangePage
+		 * 			oldPage.afterChangePage
+		 * 			this.beforeRender
+		 * 		<-	this.slideDown
+		 * 		this.onRender
+		 */
+		var defaultOptions = {
+			onRender: function() {
+				console.info('wheelEventInitialize : onRender', $(this).data('logName'));
+				console.log('onRender');
+			},
+			onChangePage: function() {
+				console.info('wheelEventInitialize : onChangePage', $(this).data('logName'));
+				console.log('leaving page');
+			},
+			mustBeConnected: false
+		};
+		var base = {
+			render: function() {
+				console.info('wheelEventInitialize : render', $(this).data('logName'));
+				if ($('main').children().length === 0) {
+					$('main').append($(this));
+					$(this).trigger('beforeRender');
+				} else {
+					$('main').children().trigger('beforeChangePage', [this]);
+				}
+			},
+			beforeChangePage: function(e, newPage) {
+				console.info('wheelEventInitialize : beforeChangePage', $(this).data('logName'));
+				var _this = this;
+				$(this).slideUp(700, function() {
+					$(_this).trigger('onChangePage');
+					$(_this).trigger('afterChangePage', [newPage]);
+				});
+			},
+			afterChangePage: function(e, newPage) {
+				console.info('wheelEventInitialize : afterChangePage', $(this).data('logName'));
+				$(this).remove();
+				$('main').append($(newPage));
+				$(newPage).trigger('beforeRender');
+			},
+			beforeRender: function() {
+				console.info('wheelEventInitialize : beforeRender', $(this).data('logName'));
+				var _this = this;
+				$(this).css('display', 'none');
+				$(_this).trigger('onRender');
+				$(this).slideDown(700);
+			}
+		};
+		var opt = Object.assign(defaultOptions, options, base);
+		this.on('onRender', opt.onRender);
+		this.on('onChangePage', opt.onChangePage);
+		this.on('beforeChangePage', opt.beforeChangePage);
+		this.on('afterChangePage', opt.afterChangePage);
+		this.on('beforeRender', opt.beforeRender);
+		this.on('render', opt.render);
+	};
+
 	var wheelEvent = {
 		init() {
 			// doing different things depends on window.location.hash
 			wheelEvent.navBar();
 			wheelEvent.footer();
-			var page = window.location.hash.split('/');
-			// deleting '#' with substring
-			switch (page[0].substring(1)) {
-				// home page
-				case '':
-					// @TODO home page
-					wheelEvent.homePage();
-					break;
 
-				// 404
-				default:
-					// @TODO page 404
-					break;
+			var onHashChange = function() {
+				var page = window.location.hash.split('/');
+				// deleting '#' with substring
+				switch (page[0].substring(1)) {
+					// home page
+					case '':
+						// @TODO home page
+						wheelEvent.homePage();
+						break;
+
+					// 404
+					default:
+						wheelEvent.pageNotFound();
+						break;
+				}
+			};
+			// cross browser hash change detection
+			if (!('onhashchange' in window)) {
+				var oldHref = location.href;
+				setInterval(function() {
+					var newHref = location.href;
+					if (oldHref !== newHref) {
+						var _oldHref = oldHref;
+						oldHref = newHref;
+						onHashChange.call(window, {
+							type: 'hashchange',
+							newURL: newHref,
+							oldURL: _oldHref
+						});
+					}
+				}, 100);
+			} else if (window.addEventListener) {
+				window.addEventListener('hashchange', onHashChange, false);
+			} else if (window.attachEvent) {
+				window.attachEvent('onhashchange', onHashChange);
 			}
+			onHashChange();
 		},
 		navBar() {
 			var navBar = $(
@@ -53,10 +172,14 @@
 			// @TODO footer ?
 		},
 		homePage() {
-			console.log('homePage');
+			console.info('wheelEvent.homePage()');
 			// ctrl + k + 4 for better view
 			/**
 			 * FUNCTIONS
+			 */
+			/**
+			 * fonction temporaire, il suffit de changer window.location.hash pour changer de page
+			 * @param {Boolean} isUserOk true if correctly connected
 			 */
 			var goToConnectedPage = function(isUserOk) {
 				// @TODO change hash to next page then update
@@ -133,6 +256,16 @@
 					'</div>' +
 				'</div>'
 			);
+			home.wheelEventInitialize('homePage', {
+				onRender: function() {
+					console.info('wheelEventInitialize : onRender', $(this).data('logName'));
+					$('main').addClass('valign-wrapper');
+				},
+				onChangePage: function() {
+					console.info('wheelEventInitialize : onChangePage', $(this).data('logName'));
+					$('main').removeClass('valign-wrapper');
+				}
+			});
 			home.attr('id', id.home);
 			home.find('#' + id.btnConnectFB).click(function() {
 				console.log('connection btn');
@@ -145,28 +278,9 @@
 				loginWithProvider(provider);
 			});
 
-			// manipulate container <main>
-			$('main').addClass('valign-wrapper');
-			// you must call `$('main').children().trigger('leavePage');` before changing page
-			home.on('leavePage', function(e, callback) {
-				home.slideUp(300, function() {
-					$('main').removeClass('valign-wrapper');
-					home.remove();
-					if (typeof callback === 'function') {
-						callback();
-					}
-				});
-			});
-
 			// @TODO move this in another function ?
 			// check if we are changing page or intiate app, then add home to page
-			if ($('main').children().length === 0) {
-				$('main').append(home);
-			} else {
-				$('main').children().trigger('leavePage', function() {
-					$('main').append(home);
-				});
-			}
+			home.trigger('render');
 
 			// @TODO disconnect button when connected
 			// $('#logout').click(function logout() {
@@ -177,6 +291,21 @@
 			// 	});
 			// });
 		},
+		pageNotFound() {
+			console.info('wheelEvent.pageNotFound()');
+			var pageNotFound = $(
+				'<div class="row flow-text">' +
+					'<div class="col s12">' +
+						'<h2 class="center-align">Erreur 404</h2>' +
+						'<p class="center-align">' +
+							'Page introuvable ou inexistante' +
+						'</p>' +
+					'</div>' +
+				'</div>'
+			);
+			pageNotFound.wheelEventInitialize('pageNotFound');
+			pageNotFound.trigger('render');
+		},
 		guid() {
 			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 				var r = Math.random() * 16 | 0;
@@ -184,13 +313,12 @@
 				return v.toString(16);
 			});
 		},
-		// toString obfuscation
 		toString() {
-			return 'object';
+			// toString obfuscation
+			return 'Object';
 		}
 	};
 	window.app = {
 		init: wheelEvent.init
 	};
-	// @TODO make browser listen to window.location.hash change to detect pageChange
 })();
