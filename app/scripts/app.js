@@ -173,6 +173,35 @@
 		},
 		homePage() {
 			console.info('wheelEvent.homePage()');
+			var homePage = $(
+				'<div class="row flow-text">' +
+					'<div class="col s12">' +
+						'<div class="component">' +
+							'<div class="cn-wrapper opened-nav" id="cn-wrapper">' +
+								'<ul>' +
+									'<li><a href="#"><span>Le concept</span></a></li>' +
+									'<li><a href="#"><span>Carte</span></a></li>' +
+									'<li><a href="#"><span>Mes Events</span></a></li>' +
+									'<li><a href="#"><span>Ma Page</span></a></li>' +
+									'<li><a href="#"><span>À propos</span></a></li>' +
+									'<li><a href="#"><span>C.G.V.</span></a></li>' +
+								 '</ul>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+				'</div>'
+			);
+
+			homePage.find('.opened-nav a').click(function(event) {
+				if ($('.opened-nav').hasClass('loading')) {
+					$('.opened-nav').removeClass('loading');
+				} else {
+					$('.opened-nav').addClass('loading');
+				}
+			});
+			homePage.wheelEventInitialize('homePage');
+			homePage.trigger('render');
+			return;
 			// ctrl + k + 4 for better view
 			/**
 			 * FUNCTIONS
