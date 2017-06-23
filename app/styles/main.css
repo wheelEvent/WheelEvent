@@ -167,19 +167,21 @@ main {
 }
 
 /**
- * wheel Menu
+ **********************************
+ * WHEEL MENU
+ **********************************
  */
 
 .component {
 	position: relative;
 	margin-bottom: 3em;
-	height: 15em;
+	height: 20em;
 	font-family: 'Lato', Arial, sans-serif;
 }
 
 .cn-wrapper {
 	position: absolute;
-	top: 100%;
+	top: 60%;
 	left: 50%;
 	z-index: 10;
 	margin-top: -13.5em;
@@ -246,7 +248,6 @@ main {
 	width: 10em;
 	height: 10em;
 	font-size: 1.5em;
-	transition: all .3s ease;
 	transform: skew(30deg);
 	transform-origin: 100% 100%;
 	pointer-events: none;
@@ -273,7 +274,7 @@ main {
 
 .cn-wrapper li a span {
 	position: relative;
-	top: 1.8em;
+	line-height: .8em;
 	display: block;
 	font-size: .5em;
 	font-weight: 700;
@@ -291,33 +292,55 @@ main {
 }
 
 .opened-nav li:first-child {
-	transform: rotate(60deg) skew(30deg);
+	transform: rotate(360deg) skew(30deg);
 }
 
 .opened-nav li:nth-child(2) {
-	transform: rotate(120deg) skew(30deg);
+	transform: rotate(60deg) skew(30deg);
 }
 
 .opened-nav  li:nth-child(3) {
-	transform: rotate(180deg) skew(30deg);
+	transform: rotate(120deg) skew(30deg);
 }
 
 .opened-nav li:nth-child(4) {
-	transform: rotate(240deg) skew(30deg);
+	transform: rotate(180deg) skew(30deg);
 }
 
 .opened-nav li:nth-child(5) {
+	transform: rotate(240deg) skew(30deg);
+}
+
+.opened-nav li:nth-child(6) {
 	transform: rotate(300deg) skew(30deg);
 }
 
-.opened-nav  li:nth-child(3) span,
 .opened-nav  li:nth-child(4) span,
-.opened-nav  li:nth-child(5) span {
+.opened-nav  li:nth-child(5) span,
+.opened-nav  li:nth-child(6) span {
 	transform: rotate(180deg);
 }
 
 @media only screen and (max-width: 480px) {
+	.component {
+		height: 25em;
+	}
+	.cn-wrapper {
+		top: 60%;
+	}
+
 	.cn-wrapper {
 		font-size: .68em;
+	}
+}
+@media only screen and (min-width: 480px) {
+	.component {
+		height: 25em;
+	}
+	.cn-wrapper {
+		top: 60%;
+	}
+	.cn-wrapper li a span {
+		top:.5em;
 	}
 }

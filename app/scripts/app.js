@@ -2,10 +2,10 @@
  * @NOTE
  * - Create new *.js file for each big page to avoid Cthulhu code ...
  *  -> see main.js, var scriptToLoad
+ * ctrl+k+3 for better view
  */
 (function() {
 	'use strict';
-	// ctrl+k+3 for better view
 	/**
 	 * Initialize les objet principaux de la vue
 	 * Usage :
@@ -144,16 +144,61 @@
 			onHashChange();
 		},
 		navBar() {
+			var id = {
+				slideOut: wheelEvent.guid()
+			};
 			var navBar = $(
 				'<nav>' +
-					'<ul id="slide-out" class="side-nav">' +
-						'<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>' +
-						'<li><a href="#!">Second Link</a></li>' +
-						'<li><div class="divider"></div></li>' +
-						'<li><a class="subheader">Subheader</a></li>' +
-						'<li><a class="waves-effect" href="#!">Third Link With Waves</a></li>' +
-					'</ul>' +
-					'<a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>' +
+					'<div class="nav-wrapper">' +
+						'<a href="#" class="brand-logo">Wheel Event</a>' +
+						// for better view, hide this block (ctrl+k+7)
+						'<ul id="' + id.slideOut + '" class="side-nav">' +
+							'<li>' +
+								'<h1 class="black-text center-align flow-text">' +
+									'<span style="font-size:3em;">' +
+										'WheelEvent' +
+									'</span>' +
+								'</h1>' +
+							'</li>' +
+							'<li>' +
+								'<a href="#concept">' +
+									'<i class="material-icons">lightbulb_outline</i>' +
+									'Le concept' +
+								'</a>' +
+							'</li>' +
+							'<li>' +
+								'<a href="#event/map">' +
+									'<i class="material-icons">map</i>' +
+									'Carte' +
+								'</a>' +
+							'</li>' +
+							'<li>' +
+								'<a href="#event/sub">' +
+									'<i class="material-icons">event</i>' +
+									'Mes Events' +
+								'</a>' +
+							'</li>' +
+							'<li>' +
+								'<a href="#account/me">' +
+									'<i class="material-icons">account_circle</i>' +
+									'Ma Page' +
+								'</a>' +
+							'</li>' +
+							'<li>' +
+								'<a href="#about">' +
+									'<i class="material-icons">copyright</i>' +
+									'À propos' +
+								'</a>' +
+							'</li>' +
+							'<li>' +
+								'<a href="#cgv">' +
+									'<i class="material-icons">book</i>' +
+									'C.G.V.' +
+								'</a>' +
+							'</li>' +
+						'</ul>' +
+						'<a href="#" data-activates="' + id.slideOut + '" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>' +
+					'</div>' +
 				'</nav>'
 			);
 			$('header').empty();
@@ -173,26 +218,71 @@
 		},
 		homePage() {
 			console.info('wheelEvent.homePage()');
+			var id = {
+				wheel: wheelEvent.guid(),
+				sposoredEvent: wheelEvent.guid(),
+				lastEvent: wheelEvent.guid()
+			};
 			var homePage = $(
 				'<div class="row flow-text">' +
 					'<div class="col s12">' +
+						// for better view, hide this block (ctrl+k+7)
 						'<div class="component">' +
-							'<div class="cn-wrapper opened-nav" id="cn-wrapper">' +
+							'<div class="cn-wrapper opened-nav" id="' + id.wheel + '">' +
 								'<ul>' +
-									'<li><a href="#"><span>Le concept</span></a></li>' +
-									'<li><a href="#"><span>Carte</span></a></li>' +
-									'<li><a href="#"><span>Mes Events</span></a></li>' +
-									'<li><a href="#"><span>Ma Page</span></a></li>' +
-									'<li><a href="#"><span>À propos</span></a></li>' +
-									'<li><a href="#"><span>C.G.V.</span></a></li>' +
-								 '</ul>' +
+									'<li><a href="#concept">' +
+										'<span>' +
+											'<i class="material-icons">lightbulb_outline</i><br>' +
+											'Le concept' +
+										'</span>' +
+										'</a>' +
+									'</li>' +
+									'<li><a href="#event/map">' +
+										'<span>' +
+											'<i class="material-icons">map</i><br>' +
+											'Carte' +
+										'</span>' +
+										'</a>' +
+									'</li>' +
+									'<li><a href="#event/sub">' +
+										'<span>' +
+											'<i class="material-icons">event</i><br>' +
+											'Mes Events' +
+										'</span>' +
+										'</a>' +
+									'</li>' +
+									'<li><a href="#account/me">' +
+										'<span>' +
+											'Ma Page<br>' +
+											'<i class="material-icons">account_circle</i>' +
+										'</span>' +
+										'</a>' +
+									'</li>' +
+									'<li><a href="#about">' +
+										'<span>' +
+											'À propos<br>' +
+											'<i class="material-icons">copyright</i>' +
+										'</span>' +
+										'</a>' +
+									'</li>' +
+									'<li><a href="#cgv">' +
+										'<span>' +
+											'C.G.V.<br>' +
+											'<i class="material-icons">book</i>' +
+										'</span>' +
+										'</a>' +
+									'</li>' +
+								'</ul>' +
 							'</div>' +
 						'</div>' +
+					'</div>' +
+					'<div class="col s12 l8">' +
+						// @TODO here, last event list
 					'</div>' +
 				'</div>'
 			);
 
-			homePage.find('.opened-nav a').click(function(event) {
+			homePage.find('.opened-nav a').click(function() {
 				if ($('.opened-nav').hasClass('loading')) {
 					$('.opened-nav').removeClass('loading');
 				} else {
@@ -210,6 +300,8 @@
 			 * fonction temporaire, il suffit de changer window.location.hash pour changer de page
 			 * @param {Boolean} isUserOk true if correctly connected
 			 */
+			/** */
+			/** COMMENT OLD CODE, still usefull
 			var goToConnectedPage = function(isUserOk) {
 				// @TODO change hash to next page then update
 
@@ -319,6 +411,7 @@
 			// 		console.warn('An error happened.', error);
 			// 	});
 			// });
+			/***/
 		},
 		pageNotFound() {
 			console.info('wheelEvent.pageNotFound()');
