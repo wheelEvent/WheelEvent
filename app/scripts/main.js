@@ -17,6 +17,14 @@
 *
 */
 // eslint-env browser
+const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
+	// [::1] is the IPv6 localhost address.
+	window.location.hostname === '[::1]' ||
+	// 127.0.0.1/8 is considered localhost for IPv4.
+	window.location.hostname.match(
+		/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+		)
+	);
 (function() {
 	'use strict';
 
@@ -24,14 +32,6 @@
 	// and that the current page is accessed from a secure origin. Using a
 	// service worker from an insecure origin will trigger JS console errors. See
 	// http://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features
-	var isLocalhost = Boolean(window.location.hostname === 'localhost' ||
-		// [::1] is the IPv6 localhost address.
-		window.location.hostname === '[::1]' ||
-		// 127.0.0.1/8 is considered localhost for IPv4.
-		window.location.hostname.match(
-			/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-			)
-		);
 
 	if ('serviceWorker' in navigator &&
 		(window.location.protocol === 'https:' || isLocalhost)) {
@@ -97,7 +97,18 @@
 			}
 		};
 	};
+	/**
+	 * si le chargement d'un script foire
+	 */
+	function ifFail() {
+		// @TODO faire une fonction qui affiche "désolé une erreur est survenue, blablabla"
+		console.alert('Impossible de charger tout les fichier necessaire à l\'application');
+	}
 	for (let i = scriptToLoad.length - 1; i >= 0; i--) {
-		$.getScript(scriptToLoad[i], waitAllScriptToBeLoaded(i));
+		$.ajax({
+			url: scriptToLoad[i],
+			dataType: 'script',
+			cache: !window.isLocalHost
+		}).done(waitAllScriptToBeLoaded(i)).fail(ifFail);
 	}
 })();

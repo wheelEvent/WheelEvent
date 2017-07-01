@@ -23,6 +23,9 @@
 	 */
 	$.fn.wheelEventInitialize = function(logName = 'noname', options = {}) {
 		console.info('wheelEventInitialize', this);
+		this.toString = function() {
+			return 'wheelEventInitialize = function(logName = \'noname\', options = {})';
+		};
 		if (logName.constructor !== String) {
 			console.warn('logName must be a String');
 			return;
@@ -31,6 +34,7 @@
 			console.warn('options must be a Object');
 			return;
 		}
+		var opt = {};
 		this.data('logName', logName);
 		/**
 		 * Processus de changement d'élément sur la vue :
@@ -58,14 +62,26 @@
 			},
 			mustBeConnected: false
 		};
-		var base = {
+		var system = {
 			render: function() {
 				console.info('wheelEventInitialize : render', $(this).data('logName'));
-				if ($('main').children().length === 0) {
-					$('main').append($(this));
-					$(this).trigger('beforeRender');
+				var _this = this;
+				/**
+				 * fonction qui render la page
+				 */
+				function renderPage() {
+					if ($('main').children().length === 0) {
+						$('main').append($(_this));
+						$(_this).trigger('beforeRender');
+					} else {
+						$('main').children().trigger('beforeChangePage', [_this]);
+					}
+				}
+
+				if (opt.mustBeConnected && !window.get().isConnected()) {
+					wheelEvent.loginPage(renderPage);
 				} else {
-					$('main').children().trigger('beforeChangePage', [this]);
+					renderPage();
 				}
 			},
 			beforeChangePage: function(e, newPage) {
@@ -90,7 +106,7 @@
 				$(this).slideDown(700);
 			}
 		};
-		var opt = Object.assign(defaultOptions, options, base);
+		opt = Object.assign(defaultOptions, options, system);
 		this.on('onRender', opt.onRender);
 		this.on('onChangePage', opt.onChangePage);
 		this.on('beforeChangePage', opt.beforeChangePage);
@@ -113,6 +129,18 @@
 					case '':
 						// @TODO home page
 						wheelEvent.homePage();
+						break;
+
+					case 'account':
+						switch (page[1]) {
+							case 'me':
+								wheelEvent.myAccount();
+								break;
+
+							default:
+								wheelEvent.pageNotFound();
+								break;
+						}
 						break;
 
 					// 404
@@ -276,9 +304,7 @@
 							'</div>' +
 						'</div>' +
 					'</div>' +
-					'<div class="col s12 l8">' +
-						// @TODO here, last event list
-					'</div>' +
+					'<div class="col s12 l8" id="' + id.lastEvent + '"></div>' +
 				'</div>'
 			);
 
@@ -290,42 +316,157 @@
 				}
 			});
 			homePage.wheelEventInitialize('homePage');
-			homePage.trigger('render');
-			return;
-			// ctrl + k + 4 for better view
-			/**
-			 * FUNCTIONS
-			 */
-			/**
-			 * fonction temporaire, il suffit de changer window.location.hash pour changer de page
-			 * @param {Boolean} isUserOk true if correctly connected
-			 */
-			/** */
-			/** COMMENT OLD CODE, still usefull
-			var goToConnectedPage = function(isUserOk) {
-				// @TODO change hash to next page then update
 
-				// trigger leavePage of previous page
-				$('main').children().trigger('leavePage', function() {
-					// then display newPage
-					if (isUserOk) {
-						$('main').html(
-							'<h2>Bravo</h2>' +
-							'<h1>Vous êtes bien connecté</h1>'
-						);
+			if (typeof window.app.lastEvent === 'function') {
+				window.app.lastEvent().init({
+					container: homePage.find('#' + id.lastEvent)
+				});
+				homePage.trigger('render');
+			} else {
+				$.getScript('/scripts/assets/lastEvent.js').done(function() {
+					window.app.lastEvent().init({
+						container: homePage.find('#' + id.lastEvent)
+					});
+				}).always(function() {
+					homePage.trigger('render');
+				});
+			}
+			return;
+			// folding
+				// ctrl + k + 4 for better view
+				/**
+				 * FUNCTIONS
+				 */
+				/**
+				 * fonction temporaire, il suffit de changer window.location.hash pour changer de page
+				 * @param {Boolean} isUserOk true if correctly connected
+				 */
+				/** */
+				/** COMMENT OLD CODE, still usefull
+				var goToConnectedPage = function(isUserOk) {
+					// @TODO change hash to next page then update
+
+					// trigger leavePage of previous page
+					$('main').children().trigger('leavePage', function() {
+						// then display newPage
+						if (isUserOk) {
+							$('main').html(
+								'<h2>Bravo</h2>' +
+								'<h1>Vous êtes bien connecté</h1>'
+							);
+						}
+						if (!isUserOk) {
+							$('main').html(
+								'<h2>Erreur</h2>' +
+								'<h1>Impossible de manipuler la base de données</h1>'
+							);
+						}
+					});
+				};
+				var createUserIfDoesntExist = function(socialNetworkUser, callback) {
+					window.get().currentUser(function(user) {
+						if (!user) {
+							window.push.createUser(socialNetworkUser.displayName, socialNetworkUser.email, socialNetworkUser.photoURL, callback);
+						}
+						if (user) {
+							callback(true);
+						}
+					});
+				};
+				var loginWithProvider = function(provider) {
+					try {
+						firebase.auth().signInWithPopup(provider).then(function(result) {
+							// This gives you a Facebook Access Token. You can use it to access the Facebook API.
+							// var token = result.credential.accessToken;
+							// The signed-in user info.
+							var socialNetworkUser = result.user;
+							console.info('logged successfully', socialNetworkUser);
+							createUserIfDoesntExist(socialNetworkUser, goToConnectedPage);
+						}).catch(function(error) {
+							// Handle Errors here.
+							var errorCode = error.code;
+							var errorMessage = error.message;
+							// The email of the user's account used.
+							var email = error.email;
+							// The firebase.auth.AuthCredential type that was used.
+							var credential = error.credential;
+							// ...
+							console.warn('logged failed', errorCode, errorMessage, email, credential);
+						});
+					} catch (e) {
+						console.error(e);
 					}
-					if (!isUserOk) {
-						$('main').html(
-							'<h2>Erreur</h2>' +
-							'<h1>Impossible de manipuler la base de données</h1>'
-						);
+				};
+				// home block & ids
+				var id = {
+					home: wheelEvent.guid(),
+					btnConnectFB: wheelEvent.guid(),
+					btnConnectG: wheelEvent.guid()
+				};
+				var home = $(
+					'<div class="row flow-text">' +
+						'<div class="col s12">' +
+							'<h2 class="center-align">WheelEvent</h2>' +
+							'<p>' +
+								'Description du site<br>' +
+								'Eu commodo ad aliquip nostrud irure consectetur mollit et in in ut deserunt deserunt eu deserunt ' +
+								'exercitation ullamco quis cillum incididunt occaecat aliquip esse eu in ea veniam est non occaecat ' +
+								'eu consequat consequat in voluptate magna sint esse est voluptate voluptate esse minim tempor labore ' +
+							'</p>' +
+							'<a href="#" id="' + id.btnConnectFB + '">Connexion&nbsp;via&nbsp;FB</a>' +
+							'<a href="#" id="' + id.btnConnectG + '">Connexion&nbsp;via&nbsp;Google</a>' +
+						'</div>' +
+					'</div>'
+				);
+				home.wheelEventInitialize('homePage', {
+					onRender: function() {
+						console.info('wheelEventInitialize : onRender', $(this).data('logName'));
+						$('main').addClass('valign-wrapper');
+					},
+					onChangePage: function() {
+						console.info('wheelEventInitialize : onChangePage', $(this).data('logName'));
+						$('main').removeClass('valign-wrapper');
 					}
 				});
-			};
-			var createUserIfDoesntExist = function(socialNetworkUser, callback) {
-				window.get.currentUser(function(user) {
+				home.attr('id', id.home);
+				home.find('#' + id.btnConnectFB).click(function() {
+					console.log('connection btn');
+					var provider = new firebase.auth.FacebookAuthProvider();
+					loginWithProvider(provider);
+				});
+				home.find('#' + id.btnConnectG).click(function() {
+					console.log('connection btn');
+					var provider = new firebase.auth.GoogleAuthProvider();
+					loginWithProvider(provider);
+				});
+
+				// @TODO move this in another function ?
+				// check if we are changing page or intiate app, then add home to page
+				home.trigger('render');
+
+				// @TODO disconnect button when connected
+				// $('#logout').click(function logout() {
+				// 	firebase.auth().signOut().then(function() {
+				// 		console.info('Sign-out successful.');
+				// 	}).catch(function(error) {
+				// 		console.warn('An error happened.', error);
+				// 	});
+				// });
+			/***/
+		},
+		loginPage(callback=(console.log)) {
+			console.info('wheelEvent.loginPage()');
+			var checkUserThenRedirect = function(socialNetworkUser) {
+				window.get().currentUser(function(user) {
 					if (!user) {
-						window.push.createUser(socialNetworkUser.displayName, socialNetworkUser.email, socialNetworkUser.photoURL, callback);
+						window.push.createUser(socialNetworkUser.displayName, socialNetworkUser.email, socialNetworkUser.photoURL, function(success) {
+							if (success) {
+								callback();
+							} else {
+								// @TODO faire une fonction qui affiche "désolé une erreur est survenue, blablabla"
+								wheelEvent.pageNotFound();
+							}
+						});
 					}
 					if (user) {
 						callback(true);
@@ -335,83 +476,78 @@
 			var loginWithProvider = function(provider) {
 				try {
 					firebase.auth().signInWithPopup(provider).then(function(result) {
+						// @TODO prepare facebook here
 						// This gives you a Facebook Access Token. You can use it to access the Facebook API.
 						// var token = result.credential.accessToken;
+
 						// The signed-in user info.
 						var socialNetworkUser = result.user;
 						console.info('logged successfully', socialNetworkUser);
-						createUserIfDoesntExist(socialNetworkUser, goToConnectedPage);
+						checkUserThenRedirect(socialNetworkUser);
 					}).catch(function(error) {
-						// Handle Errors here.
-						var errorCode = error.code;
-						var errorMessage = error.message;
-						// The email of the user's account used.
-						var email = error.email;
-						// The firebase.auth.AuthCredential type that was used.
-						var credential = error.credential;
-						// ...
-						console.warn('logged failed', errorCode, errorMessage, email, credential);
+						// @TODO faire une fonction qui affiche "désolé une erreur est survenue, blablabla"
+						console.warn('logged failed', error);
 					});
 				} catch (e) {
 					console.error(e);
 				}
 			};
-			// home block & ids
 			var id = {
-				home: wheelEvent.guid(),
-				btnConnectFB: wheelEvent.guid(),
-				btnConnectG: wheelEvent.guid()
+				facebookLoginBtn: wheelEvent.guid(),
+				googleLoginBtn: wheelEvent.guid()
 			};
-			var home = $(
+			var loginPage = $(
 				'<div class="row flow-text">' +
 					'<div class="col s12">' +
-						'<h2 class="center-align">WheelEvent</h2>' +
-						'<p>' +
-							'Description du site<br>' +
-							'Eu commodo ad aliquip nostrud irure consectetur mollit et in in ut deserunt deserunt eu deserunt ' +
-							'exercitation ullamco quis cillum incididunt occaecat aliquip esse eu in ea veniam est non occaecat ' +
-							'eu consequat consequat in voluptate magna sint esse est voluptate voluptate esse minim tempor labore ' +
+						'<h2 class="center-align">Connexion<br>Inscription</h2>' +
+						'<p class="center-align">' +
+							'Vous devez vous connecter pour accéder à cette page.<br>' +
+							'<i>Une connexion via <span class="blue-text">facebook</span> est nécessaire pour profiter des fonctionnalités de publications synchronisées</i>'+
 						'</p>' +
-						'<a href="#" id="' + id.btnConnectFB + '">Connexion&nbsp;via&nbsp;FB</a>' +
-						'<a href="#" id="' + id.btnConnectG + '">Connexion&nbsp;via&nbsp;Google</a>' +
+						'<div class="row">'+
+							'<div class="col s12 center-align">'+
+								'<a class="btn blue white-text waves-effect waves-light" id="'+id.facebookLoginBtn+'">Via Facebook</a>'+
+							'</div>'+
+						'</div>'+
+						'<div class="row">'+
+							'<div class="col s12 center-align">'+
+								'<a class="btn red white-text waves-effect waves-light" id="'+id.googleLoginBtn+'">Via Google</a>'+
+							'</div>'+
+						'</div>'+
 					'</div>' +
 				'</div>'
 			);
-			home.wheelEventInitialize('homePage', {
-				onRender: function() {
-					console.info('wheelEventInitialize : onRender', $(this).data('logName'));
-					$('main').addClass('valign-wrapper');
-				},
-				onChangePage: function() {
-					console.info('wheelEventInitialize : onChangePage', $(this).data('logName'));
-					$('main').removeClass('valign-wrapper');
-				}
-			});
-			home.attr('id', id.home);
-			home.find('#' + id.btnConnectFB).click(function() {
-				console.log('connection btn');
+			loginPage.find('#'+id.facebookLoginBtn).click(function() {
 				var provider = new firebase.auth.FacebookAuthProvider();
 				loginWithProvider(provider);
 			});
-			home.find('#' + id.btnConnectG).click(function() {
-				console.log('connection btn');
+			loginPage.find('#'+id.googleLoginBtn).click(function() {
 				var provider = new firebase.auth.GoogleAuthProvider();
 				loginWithProvider(provider);
 			});
+			loginPage.wheelEventInitialize('loginPage');
+			loginPage.trigger('render');
+		},
+		myAccount() {
+			console.info('wheelEvent.myAccount()');
+			var loadMyAccount = function() {
+				var myAccount = window.app.myAccount().init();
+				myAccount.wheelEventInitialize('myAccount', {
+					mustBeConnected: true
+				});
+				myAccount.trigger('render');
+			};
 
-			// @TODO move this in another function ?
-			// check if we are changing page or intiate app, then add home to page
-			home.trigger('render');
-
-			// @TODO disconnect button when connected
-			// $('#logout').click(function logout() {
-			// 	firebase.auth().signOut().then(function() {
-			// 		console.info('Sign-out successful.');
-			// 	}).catch(function(error) {
-			// 		console.warn('An error happened.', error);
-			// 	});
-			// });
-			/***/
+			$.ajax({
+				url: '/scripts/page/myAccount.js',
+				dataType: 'script',
+				cache: !window.isLocalHost
+			})
+			.done(loadMyAccount)
+			.fail(function() {
+				// @TODO faire une fonction qui affiche "désolé une erreur est survenue, blablabla"
+				wheelEvent.pageNotFound();
+			});
 		},
 		pageNotFound() {
 			console.info('wheelEvent.pageNotFound()');
@@ -441,6 +577,7 @@
 		}
 	};
 	window.app = {
-		init: wheelEvent.init
+		init: wheelEvent.init,
+		guid: wheelEvent.guid
 	};
 })();

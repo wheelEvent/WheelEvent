@@ -3,5 +3,7 @@
 	"linebreak-style": 0,
 	"max-len":0,
 	"no-unused-vars":1,
-	"valid-jsdoc":1
+	"valid-jsdoc":1,
+	"space-infix-ops":0,
+	"no-use-before-define":1
 }
