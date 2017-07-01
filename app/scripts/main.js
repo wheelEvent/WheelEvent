@@ -58,7 +58,7 @@ const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
 							break;
 
 							case 'redundant':
-							throw new Error('The installing ' +
+							throw new Error('The installing '+
 								'service worker became redundant.');
 
 							default:
@@ -84,10 +84,10 @@ const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
 	var waitAllScriptToBeLoaded = function(i) {
 		return function(data, textStatus, jqxhr) {
 			if (textStatus.toLowerCase() !== 'success') {
-				console.warn('Error loading ' + scriptToLoad[i], data, textStatus, jqxhr);
+				console.warn('Error loading '+scriptToLoad[i], data, textStatus, jqxhr);
 			}
 			if (textStatus.toLowerCase() === 'success') {
-				console.info(scriptToLoad[i] + ' loaded successfully');
+				console.info(scriptToLoad[i]+' loaded successfully');
 				loadedScript++;
 				if (loadedScript === scriptToLoad.length) {
 					app.init();

@@ -28,7 +28,7 @@
 		 */
 		currentUser(callback) {
 			var userId = wheelEventGet.currentUserId();
-			var user = firebase.database().ref('users/' + userId);
+			var user = firebase.database().ref('users/'+userId);
 			user.once('value').then(function(snapshot) {
 				snapshot = snapshot.val();
 				if (snapshot === null) {

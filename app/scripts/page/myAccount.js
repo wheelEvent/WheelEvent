@@ -22,13 +22,13 @@
 					main: window.app.guid()
 				};
 				var block = $(
-					'<div class="row flow-text" id="'+id.main+'">' +
-						'<div class="col s12">' +
-							'<h2 class="center-align">Mon compte</h2>' +
-							'<p class="center-align">' +
-								'Page en cours de développement' +
-							'</p>' +
-						'</div>' +
+					'<div class="row flow-text" id="'+id.main+'">'+
+						'<div class="col s12">'+
+							'<h2 class="center-align">Mon compte</h2>'+
+							'<p class="center-align">'+
+								'Page en cours de développement'+
+							'</p>'+
+						'</div>'+
 					'</div>'
 				);
 				block.data('id', id);

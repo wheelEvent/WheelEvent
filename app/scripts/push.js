@@ -36,7 +36,7 @@
 		 */
 		createUser(_username, _email, _profilePicture, callback) {
 			var userId = window.get.currentUserId();
-			var user = firebase.database().ref('users/' + userId);
+			var user = firebase.database().ref('users/'+userId);
 			user.once('value').then(function(snapshot) {
 				snapshot = snapshot.val();
 				if (snapshot === null) {
@@ -63,7 +63,7 @@
 		 * @param  {Date}     _from    object Date javascript at the beginnning of the event
 		 * @param  {Date}     _to      object Date javascript at the end of the event
 		 * @param  {Array}    _what    ['Rassemblement indépendant', 'Rassemblement de Club', 'Jour de course', 'Week-end de course']
-		 * @param  {Array}    _public  ['Tous publics', '4 ans et +', '8 ans et +', '12 ans et +', '16 ans et +', 'Adultes', 'Enfants', 'Séniors', 'Masculin', 'Féminin']
+		 * @param  {Array}    _public  ['Tous publics', '4 ans et+', '8 ans et+', '12 ans et+', '16 ans et+', 'Adultes', 'Enfants', 'Séniors', 'Masculin', 'Féminin']
 		 * @param  {object}   _price   object provided by wheelEventPush.buildPrice
 		 * @param  {string}   _desc    event's description, \n line-break
 		 * @param  {string}   _name    event's name, no line-break

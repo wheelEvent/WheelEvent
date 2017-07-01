@@ -176,57 +176,57 @@
 				slideOut: wheelEvent.guid()
 			};
 			var navBar = $(
-				'<nav>' +
-					'<div class="nav-wrapper">' +
-						'<a href="#" class="brand-logo">Wheel Event</a>' +
+				'<nav>'+
+					'<div class="nav-wrapper">'+
+						'<a href="#" class="brand-logo">Wheel Event</a>'+
 						// for better view, hide this block (ctrl+k+7)
-						'<ul id="' + id.slideOut + '" class="side-nav">' +
-							'<li>' +
-								'<h1 class="black-text center-align flow-text">' +
-									'<span style="font-size:3em;">' +
-										'WheelEvent' +
-									'</span>' +
-								'</h1>' +
-							'</li>' +
-							'<li>' +
-								'<a href="#concept">' +
-									'<i class="material-icons">lightbulb_outline</i>' +
-									'Le concept' +
-								'</a>' +
-							'</li>' +
-							'<li>' +
-								'<a href="#event/map">' +
-									'<i class="material-icons">map</i>' +
-									'Carte' +
-								'</a>' +
-							'</li>' +
-							'<li>' +
-								'<a href="#event/sub">' +
-									'<i class="material-icons">event</i>' +
-									'Mes Events' +
-								'</a>' +
-							'</li>' +
-							'<li>' +
-								'<a href="#account/me">' +
-									'<i class="material-icons">account_circle</i>' +
-									'Ma Page' +
-								'</a>' +
-							'</li>' +
-							'<li>' +
-								'<a href="#about">' +
-									'<i class="material-icons">copyright</i>' +
-									'À propos' +
-								'</a>' +
-							'</li>' +
-							'<li>' +
-								'<a href="#cgv">' +
-									'<i class="material-icons">book</i>' +
-									'C.G.V.' +
-								'</a>' +
-							'</li>' +
-						'</ul>' +
-						'<a href="#" data-activates="' + id.slideOut + '" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>' +
-					'</div>' +
+						'<ul id="'+id.slideOut+'" class="side-nav">'+
+							'<li>'+
+								'<h1 class="black-text center-align flow-text">'+
+									'<span style="font-size:3em;">'+
+										'WheelEvent'+
+									'</span>'+
+								'</h1>'+
+							'</li>'+
+							'<li>'+
+								'<a href="#concept">'+
+									'<i class="material-icons">lightbulb_outline</i>'+
+									'Le concept'+
+								'</a>'+
+							'</li>'+
+							'<li>'+
+								'<a href="#event/map">'+
+									'<i class="material-icons">map</i>'+
+									'Carte'+
+								'</a>'+
+							'</li>'+
+							'<li>'+
+								'<a href="#event/sub">'+
+									'<i class="material-icons">event</i>'+
+									'Mes Events'+
+								'</a>'+
+							'</li>'+
+							'<li>'+
+								'<a href="#account/me">'+
+									'<i class="material-icons">account_circle</i>'+
+									'Ma Page'+
+								'</a>'+
+							'</li>'+
+							'<li>'+
+								'<a href="#about">'+
+									'<i class="material-icons">copyright</i>'+
+									'À propos'+
+								'</a>'+
+							'</li>'+
+							'<li>'+
+								'<a href="#cgv">'+
+									'<i class="material-icons">book</i>'+
+									'C.G.V.'+
+								'</a>'+
+							'</li>'+
+						'</ul>'+
+						'<a href="#" data-activates="'+id.slideOut+'" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>'+
+					'</div>'+
 				'</nav>'
 			);
 			$('header').empty();
@@ -252,59 +252,59 @@
 				lastEvent: wheelEvent.guid()
 			};
 			var homePage = $(
-				'<div class="row flow-text">' +
-					'<div class="col s12">' +
+				'<div class="row flow-text">'+
+					'<div class="col s12">'+
 						// for better view, hide this block (ctrl+k+7)
-						'<div class="component">' +
-							'<div class="cn-wrapper opened-nav" id="' + id.wheel + '">' +
-								'<ul>' +
-									'<li><a href="#concept">' +
-										'<span>' +
-											'<i class="material-icons">lightbulb_outline</i><br>' +
-											'Le concept' +
-										'</span>' +
-										'</a>' +
-									'</li>' +
-									'<li><a href="#event/map">' +
-										'<span>' +
-											'<i class="material-icons">map</i><br>' +
-											'Carte' +
-										'</span>' +
-										'</a>' +
-									'</li>' +
-									'<li><a href="#event/sub">' +
-										'<span>' +
-											'<i class="material-icons">event</i><br>' +
-											'Mes Events' +
-										'</span>' +
-										'</a>' +
-									'</li>' +
-									'<li><a href="#account/me">' +
-										'<span>' +
-											'Ma Page<br>' +
-											'<i class="material-icons">account_circle</i>' +
-										'</span>' +
-										'</a>' +
-									'</li>' +
-									'<li><a href="#about">' +
-										'<span>' +
-											'À propos<br>' +
-											'<i class="material-icons">copyright</i>' +
-										'</span>' +
-										'</a>' +
-									'</li>' +
-									'<li><a href="#cgv">' +
-										'<span>' +
-											'C.G.V.<br>' +
-											'<i class="material-icons">book</i>' +
-										'</span>' +
-										'</a>' +
-									'</li>' +
-								'</ul>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-					'<div class="col s12 l8" id="' + id.lastEvent + '"></div>' +
+						'<div class="component">'+
+							'<div class="cn-wrapper opened-nav" id="'+id.wheel+'">'+
+								'<ul>'+
+									'<li><a href="#concept">'+
+										'<span>'+
+											'<i class="material-icons">lightbulb_outline</i><br>'+
+											'Le concept'+
+										'</span>'+
+										'</a>'+
+									'</li>'+
+									'<li><a href="#event/map">'+
+										'<span>'+
+											'<i class="material-icons">map</i><br>'+
+											'Carte'+
+										'</span>'+
+										'</a>'+
+									'</li>'+
+									'<li><a href="#event/sub">'+
+										'<span>'+
+											'<i class="material-icons">event</i><br>'+
+											'Mes Events'+
+										'</span>'+
+										'</a>'+
+									'</li>'+
+									'<li><a href="#account/me">'+
+										'<span>'+
+											'Ma Page<br>'+
+											'<i class="material-icons">account_circle</i>'+
+										'</span>'+
+										'</a>'+
+									'</li>'+
+									'<li><a href="#about">'+
+										'<span>'+
+											'À propos<br>'+
+											'<i class="material-icons">copyright</i>'+
+										'</span>'+
+										'</a>'+
+									'</li>'+
+									'<li><a href="#cgv">'+
+										'<span>'+
+											'C.G.V.<br>'+
+											'<i class="material-icons">book</i>'+
+										'</span>'+
+										'</a>'+
+									'</li>'+
+								'</ul>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="col s12 l8" id="'+id.lastEvent+'"></div>'+
 				'</div>'
 			);
 
@@ -319,13 +319,13 @@
 
 			if (typeof window.app.lastEvent === 'function') {
 				window.app.lastEvent().init({
-					container: homePage.find('#' + id.lastEvent)
+					container: homePage.find('#'+id.lastEvent)
 				});
 				homePage.trigger('render');
 			} else {
 				$.getScript('/scripts/assets/lastEvent.js').done(function() {
 					window.app.lastEvent().init({
-						container: homePage.find('#' + id.lastEvent)
+						container: homePage.find('#'+id.lastEvent)
 					});
 				}).always(function() {
 					homePage.trigger('render');
@@ -333,7 +333,7 @@
 			}
 			return;
 			// folding
-				// ctrl + k + 4 for better view
+				// ctrl+k+4 for better view
 				/**
 				 * FUNCTIONS
 				 */
@@ -351,13 +351,13 @@
 						// then display newPage
 						if (isUserOk) {
 							$('main').html(
-								'<h2>Bravo</h2>' +
+								'<h2>Bravo</h2>'+
 								'<h1>Vous êtes bien connecté</h1>'
 							);
 						}
 						if (!isUserOk) {
 							$('main').html(
-								'<h2>Erreur</h2>' +
+								'<h2>Erreur</h2>'+
 								'<h1>Impossible de manipuler la base de données</h1>'
 							);
 						}
@@ -404,18 +404,18 @@
 					btnConnectG: wheelEvent.guid()
 				};
 				var home = $(
-					'<div class="row flow-text">' +
-						'<div class="col s12">' +
-							'<h2 class="center-align">WheelEvent</h2>' +
-							'<p>' +
-								'Description du site<br>' +
-								'Eu commodo ad aliquip nostrud irure consectetur mollit et in in ut deserunt deserunt eu deserunt ' +
-								'exercitation ullamco quis cillum incididunt occaecat aliquip esse eu in ea veniam est non occaecat ' +
-								'eu consequat consequat in voluptate magna sint esse est voluptate voluptate esse minim tempor labore ' +
-							'</p>' +
-							'<a href="#" id="' + id.btnConnectFB + '">Connexion&nbsp;via&nbsp;FB</a>' +
-							'<a href="#" id="' + id.btnConnectG + '">Connexion&nbsp;via&nbsp;Google</a>' +
-						'</div>' +
+					'<div class="row flow-text">'+
+						'<div class="col s12">'+
+							'<h2 class="center-align">WheelEvent</h2>'+
+							'<p>'+
+								'Description du site<br>'+
+								'Eu commodo ad aliquip nostrud irure consectetur mollit et in in ut deserunt deserunt eu deserunt '+
+								'exercitation ullamco quis cillum incididunt occaecat aliquip esse eu in ea veniam est non occaecat '+
+								'eu consequat consequat in voluptate magna sint esse est voluptate voluptate esse minim tempor labore '+
+							'</p>'+
+							'<a href="#" id="'+id.btnConnectFB+'">Connexion&nbsp;via&nbsp;FB</a>'+
+							'<a href="#" id="'+id.btnConnectG+'">Connexion&nbsp;via&nbsp;Google</a>'+
+						'</div>'+
 					'</div>'
 				);
 				home.wheelEventInitialize('homePage', {
@@ -429,12 +429,12 @@
 					}
 				});
 				home.attr('id', id.home);
-				home.find('#' + id.btnConnectFB).click(function() {
+				home.find('#'+id.btnConnectFB).click(function() {
 					console.log('connection btn');
 					var provider = new firebase.auth.FacebookAuthProvider();
 					loginWithProvider(provider);
 				});
-				home.find('#' + id.btnConnectG).click(function() {
+				home.find('#'+id.btnConnectG).click(function() {
 					console.log('connection btn');
 					var provider = new firebase.auth.GoogleAuthProvider();
 					loginWithProvider(provider);
@@ -497,13 +497,13 @@
 				googleLoginBtn: wheelEvent.guid()
 			};
 			var loginPage = $(
-				'<div class="row flow-text">' +
-					'<div class="col s12">' +
-						'<h2 class="center-align">Connexion<br>Inscription</h2>' +
-						'<p class="center-align">' +
-							'Vous devez vous connecter pour accéder à cette page.<br>' +
+				'<div class="row flow-text">'+
+					'<div class="col s12">'+
+						'<h2 class="center-align">Connexion<br>Inscription</h2>'+
+						'<p class="center-align">'+
+							'Vous devez vous connecter pour accéder à cette page.<br>'+
 							'<i>Une connexion via <span class="blue-text">facebook</span> est nécessaire pour profiter des fonctionnalités de publications synchronisées</i>'+
-						'</p>' +
+						'</p>'+
 						'<div class="row">'+
 							'<div class="col s12 center-align">'+
 								'<a class="btn blue white-text waves-effect waves-light" id="'+id.facebookLoginBtn+'">Via Facebook</a>'+
@@ -514,7 +514,7 @@
 								'<a class="btn red white-text waves-effect waves-light" id="'+id.googleLoginBtn+'">Via Google</a>'+
 							'</div>'+
 						'</div>'+
-					'</div>' +
+					'</div>'+
 				'</div>'
 			);
 			loginPage.find('#'+id.facebookLoginBtn).click(function() {
@@ -552,13 +552,13 @@
 		pageNotFound() {
 			console.info('wheelEvent.pageNotFound()');
 			var pageNotFound = $(
-				'<div class="row flow-text">' +
-					'<div class="col s12">' +
-						'<h2 class="center-align">Erreur 404</h2>' +
-						'<p class="center-align">' +
-							'Page introuvable ou inexistante' +
-						'</p>' +
-					'</div>' +
+				'<div class="row flow-text">'+
+					'<div class="col s12">'+
+						'<h2 class="center-align">Erreur 404</h2>'+
+						'<p class="center-align">'+
+							'Page introuvable ou inexistante'+
+						'</p>'+
+					'</div>'+
 				'</div>'
 			);
 			pageNotFound.wheelEventInitialize('pageNotFound');
