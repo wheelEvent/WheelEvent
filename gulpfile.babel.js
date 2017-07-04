@@ -36,6 +36,7 @@ import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
+var es = require('event-stream');
 
 // Lint JavaScript
 gulp.task('lint', () =>
@@ -105,67 +106,51 @@ gulp.task('styles', () => {
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
-gulp.task('scripts', () => {
+gulp.task('scripts', ['scripts:base', 'scripts:page', 'scripts:assets']);
+gulp.task('scripts:base', () => {
     gulp.src([
-      // Note: Since we are not using useref in the scripts build pipeline,
-      //       you need to explicitly list your scripts here in the right order
-      //       to be correctly concatenated
       './app/scripts/main.js',
       './app/scripts/get.js',
       './app/scripts/push.js',
-      './app/scripts/app.js'
-      // Other scripts
+      './app/scripts/app.js',
     ])
-      .pipe($.newer('.tmp/scripts'))
       .pipe($.sourcemaps.init())
       .pipe($.babel())
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
-      //.pipe($.concat('main.min.js'))
       .pipe($.uglify({preserveComments: 'some'}))
       // Output files
       .pipe($.size({title: 'scripts'}))
       .pipe($.sourcemaps.write('.'))
       .pipe(gulp.dest('dist/scripts'))
-      .pipe(gulp.dest('.tmp/scripts'));
+});
+gulp.task('scripts:page', () => {
     gulp.src([
-      // Note: Since we are not using useref in the scripts build pipeline,
-      //       you need to explicitly list your scripts here in the right order
-      //       to be correctly concatenated
       './app/scripts/page/myAccount.js'
-      // Other scripts
     ])
-      .pipe($.newer('.tmp/scripts'))
       .pipe($.sourcemaps.init())
       .pipe($.babel())
       .pipe($.sourcemaps.write())
-      .pipe(gulp.dest('.tmp/scripts'))
-      //.pipe($.concat('main.min.js'))
+      .pipe(gulp.dest('.tmp/scripts/page'))
       .pipe($.uglify({preserveComments: 'some'}))
       // Output files
-      .pipe($.size({title: 'scripts'}))
+      .pipe($.size({title: 'scripts:page'}))
       .pipe($.sourcemaps.write('.'))
       .pipe(gulp.dest('dist/scripts/page'))
-      .pipe(gulp.dest('.tmp/scripts'));
+});
+gulp.task('scripts:assets', () => {
     gulp.src([
-      // Note: Since we are not using useref in the scripts build pipeline,
-      //       you need to explicitly list your scripts here in the right order
-      //       to be correctly concatenated
       './app/scripts/assets/lastEvent.js'
-      // Other scripts
     ])
-      .pipe($.newer('.tmp/scripts'))
       .pipe($.sourcemaps.init())
       .pipe($.babel())
       .pipe($.sourcemaps.write())
-      .pipe(gulp.dest('.tmp/scripts'))
-      //.pipe($.concat('main.min.js'))
+      .pipe(gulp.dest('.tmp/scripts/assets'))
       .pipe($.uglify({preserveComments: 'some'}))
       // Output files
-      .pipe($.size({title: 'scripts'}))
+      .pipe($.size({title: 'scripts:assets'}))
       .pipe($.sourcemaps.write('.'))
       .pipe(gulp.dest('dist/scripts/assets'))
-      .pipe(gulp.dest('.tmp/scripts'));
 });
 
 // Scan your HTML for assets & optimize them
@@ -247,7 +232,7 @@ gulp.task('default', ['clean'], cb =>
 // Run PageSpeed Insights
 gulp.task('pagespeed', cb =>
   // Update the below URL to the public URL of your site
-  pagespeed('example.com', {
+  pagespeed('wheelevent-94cfb.firebaseapp.com', {
     strategy: 'mobile'
     // By default we use the PageSpeed Insights free (no API key) tier.
     // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
