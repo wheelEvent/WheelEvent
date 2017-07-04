@@ -33,10 +33,14 @@
 				snapshot = snapshot.val();
 				if (snapshot === null) {
 					console.warn('currentUser failed : user doesn\'t exist');
-					return callback(false);
+					if (typeof callback === 'function') {
+						return callback(false);
+					}
 				}
 				console.info('currentUser succeded', snapshot);
-				return callback(snapshot);
+				if (typeof callback === 'function') {
+					return callback(snapshot);
+				}
 			});
 		}
 	};
