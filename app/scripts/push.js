@@ -35,7 +35,7 @@
 		 * @param  {Function} callback         called when done with true if success or false if user already exist
 		 */
 		createUser(_username, _email, _profilePicture, callback) {
-			var userId = window.get.currentUserId();
+			var userId = window.get().currentUserId();
 			var user = firebase.database().ref('users/'+userId);
 			user.once('value').then(function(snapshot) {
 				snapshot = snapshot.val();
