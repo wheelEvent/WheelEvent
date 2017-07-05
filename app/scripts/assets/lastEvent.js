@@ -40,6 +40,7 @@
 				block.data('id', id);
 				block.data('eventList', []);
 				block.on('loadNewEvent', function(event, settings) {
+					console.log('event = ', event, 'settings = ', settings);
 					// @TODO
 					//	settings = {
 					//		eventToLoad: 10,

@@ -12,20 +12,6 @@
 			)
 		);
 
-	var log = function(...args) {
-		if (isLocalhost) {
-			console.log.apply(console, args);
-		}
-	};
-	var info = function(...args) {
-		if (isLocalhost) {
-			console.info.apply(console, args);
-		}
-	};
-	var warn = function(...args) {
-		console.warn.apply(console, args);
-	};
-
 	var wheelEventPush = {
 		/**
 		 * Create user in BDD
@@ -47,11 +33,11 @@
 					};
 					user.set(newUser);
 					if (isLocalhost) {
-						info('createUser succeded', newUser);
+						console.info('createUser succeded', newUser);
 					}
 					return callback(true);
 				}
-				warn('createUser failed : user already exist');
+				console.warn('createUser failed : user already exist');
 				return callback(false);
 			});
 		},
@@ -70,6 +56,7 @@
 		 * @param  {Function} callback called when done, with object's event or false if can't create event
 		 */
 		createEvent(_creator, _latitude, _longitude, _from, _to, _what, _public, _price, _desc, _name, callback) {
+			console.log('_creator = ', _creator, '_latitude = ', _latitude, '_longitude = ', _longitude, '_from = ', _from, '_to = ', _to, '_what = ', _what, '_public = ', _public, '_price = ', _price, '_desc = ', _desc, '_name = ', _name, 'callback = ', callback);
 			// @TODO
 		},
 		/**
@@ -89,11 +76,11 @@
 				this.data = {};
 				this.checkDef = function(def) {
 					if (def.constructor !== String) {
-						warn('buildPrice : def must be String');
+						console.warn('buildPrice : def must be String');
 						return false;
 					}
 					if (def.length <= 0) {
-						warn('buildPrice : def can\'t be empty');
+						console.warn('buildPrice : def can\'t be empty');
 						return false;
 					}
 					return def;
@@ -101,11 +88,11 @@
 				this.checkPrice = function(price) {
 					price = parseFloat(price);
 					if (isNaN(price)) {
-						warn('buildPrice : price must be float');
+						console.warn('buildPrice : price must be float');
 						return false;
 					}
 					if (price < 0) {
-						warn('buildPrice : price must be >= 0.00');
+						console.warn('buildPrice : price must be >= 0.00');
 						return false;
 					}
 					return price.toFixed(2);
@@ -114,7 +101,7 @@
 					def = this.checkDef(def);
 					price = this.checkPrice(price);
 					if (def === false || price === false) {
-						warn('buildPrice : can\'t add price');
+						console.warn('buildPrice : can\'t add price');
 						return false;
 					}
 					this.data[def] = price;
@@ -127,7 +114,7 @@
 						return false;
 					}
 					if (typeof this.data[def] === 'undefined') {
-						warn('buildPrice : def not found');
+						console.warn('buildPrice : def not found');
 						return false;
 					}
 					this.data[def] = price;
@@ -139,7 +126,7 @@
 						return false;
 					}
 					if (typeof this.data[def] === 'undefined') {
-						warn('buildPrice : def not found');
+						console.warn('buildPrice : def not found');
 						return false;
 					}
 					this.data[def] = false;

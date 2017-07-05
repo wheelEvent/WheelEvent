@@ -43,8 +43,9 @@
 				);
 				block.data('id', id);
 				block.on('update', function(event, settings) {
+					console.log('event = ', event, 'settings = ', settings);
 					// @TODO
-					window.get().currentUser(function(response){
+					window.get().currentUser(function(response) {
 						var preloader = block.find('.preloader-wrapper');
 						$('<p>currentUser = '+JSON.stringify(response)+'</p>').insertAfter(preloader);
 						preloader.remove();
