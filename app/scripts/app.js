@@ -172,6 +172,14 @@
 			onHashChange();
 		},
 		navBar() {
+			// @TODO disconnect button when connected
+			// $('#logout').click(function logout() {
+			// 	firebase.auth().signOut().then(function() {
+			// 		console.info('Sign-out successful.');
+			// 	}).catch(function(error) {
+			// 		console.warn('An error happened.', error);
+			// 	});
+			// });
 			var id = {
 				slideOut: wheelEvent.guid()
 			};
@@ -331,128 +339,6 @@
 					homePage.trigger('render');
 				});
 			}
-			return;
-			// folding
-				// ctrl+k+4 for better view
-				/**
-				 * FUNCTIONS
-				 */
-				/**
-				 * fonction temporaire, il suffit de changer window.location.hash pour changer de page
-				 * @param {Boolean} isUserOk true if correctly connected
-				 */
-				/** */
-				/** COMMENT OLD CODE, still usefull
-				var goToConnectedPage = function(isUserOk) {
-					// @TODO change hash to next page then update
-
-					// trigger leavePage of previous page
-					$('main').children().trigger('leavePage', function() {
-						// then display newPage
-						if (isUserOk) {
-							$('main').html(
-								'<h2>Bravo</h2>'+
-								'<h1>Vous êtes bien connecté</h1>'
-							);
-						}
-						if (!isUserOk) {
-							$('main').html(
-								'<h2>Erreur</h2>'+
-								'<h1>Impossible de manipuler la base de données</h1>'
-							);
-						}
-					});
-				};
-				var createUserIfDoesntExist = function(socialNetworkUser, callback) {
-					window.get().currentUser(function(user) {
-						if (!user) {
-							window.push.createUser(socialNetworkUser.displayName, socialNetworkUser.email, socialNetworkUser.photoURL, callback);
-						}
-						if (user) {
-							callback(true);
-						}
-					});
-				};
-				var loginWithProvider = function(provider) {
-					try {
-						firebase.auth().signInWithPopup(provider).then(function(result) {
-							// This gives you a Facebook Access Token. You can use it to access the Facebook API.
-							// var token = result.credential.accessToken;
-							// The signed-in user info.
-							var socialNetworkUser = result.user;
-							console.info('logged successfully', socialNetworkUser);
-							createUserIfDoesntExist(socialNetworkUser, goToConnectedPage);
-						}).catch(function(error) {
-							// Handle Errors here.
-							var errorCode = error.code;
-							var errorMessage = error.message;
-							// The email of the user's account used.
-							var email = error.email;
-							// The firebase.auth.AuthCredential type that was used.
-							var credential = error.credential;
-							// ...
-							console.warn('logged failed', errorCode, errorMessage, email, credential);
-						});
-					} catch (e) {
-						console.error(e);
-					}
-				};
-				// home block & ids
-				var id = {
-					home: wheelEvent.guid(),
-					btnConnectFB: wheelEvent.guid(),
-					btnConnectG: wheelEvent.guid()
-				};
-				var home = $(
-					'<div class="row flow-text">'+
-						'<div class="col s12">'+
-							'<h2 class="center-align">WheelEvent</h2>'+
-							'<p>'+
-								'Description du site<br>'+
-								'Eu commodo ad aliquip nostrud irure consectetur mollit et in in ut deserunt deserunt eu deserunt '+
-								'exercitation ullamco quis cillum incididunt occaecat aliquip esse eu in ea veniam est non occaecat '+
-								'eu consequat consequat in voluptate magna sint esse est voluptate voluptate esse minim tempor labore '+
-							'</p>'+
-							'<a href="#" id="'+id.btnConnectFB+'">Connexion&nbsp;via&nbsp;FB</a>'+
-							'<a href="#" id="'+id.btnConnectG+'">Connexion&nbsp;via&nbsp;Google</a>'+
-						'</div>'+
-					'</div>'
-				);
-				home.wheelEventInitialize('homePage', {
-					onRender: function() {
-						console.info('wheelEventInitialize : onRender', $(this).data('logName'));
-						$('main').addClass('valign-wrapper');
-					},
-					onChangePage: function() {
-						console.info('wheelEventInitialize : onChangePage', $(this).data('logName'));
-						$('main').removeClass('valign-wrapper');
-					}
-				});
-				home.attr('id', id.home);
-				home.find('#'+id.btnConnectFB).click(function() {
-					console.log('connection btn');
-					var provider = new firebase.auth.FacebookAuthProvider();
-					loginWithProvider(provider);
-				});
-				home.find('#'+id.btnConnectG).click(function() {
-					console.log('connection btn');
-					var provider = new firebase.auth.GoogleAuthProvider();
-					loginWithProvider(provider);
-				});
-
-				// @TODO move this in another function ?
-				// check if we are changing page or intiate app, then add home to page
-				home.trigger('render');
-
-				// @TODO disconnect button when connected
-				// $('#logout').click(function logout() {
-				// 	firebase.auth().signOut().then(function() {
-				// 		console.info('Sign-out successful.');
-				// 	}).catch(function(error) {
-				// 		console.warn('An error happened.', error);
-				// 	});
-				// });
-			/***/
 		},
 		loginPage(callback=(console.log)) {
 			console.info('wheelEvent.loginPage()');
