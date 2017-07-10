@@ -137,6 +137,7 @@ gulp.task('scripts:base', () => {
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
       .pipe($.uglify({preserveComments: 'some'}))
+      .on('error', gutil.log)
       // Output files
       .pipe($.size({title: 'scripts:base'}))
       .pipe($.sourcemaps.write('.'))
@@ -151,6 +152,7 @@ gulp.task('scripts:page', () => {
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts/page'))
       .pipe($.uglify({preserveComments: 'some'}))
+      .on('error', gutil.log)
       // Output files
       .pipe($.size({title: 'scripts:page'}))
       .pipe($.sourcemaps.write('.'))
@@ -165,6 +167,7 @@ gulp.task('scripts:assets', () => {
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts/assets'))
       .pipe($.uglify({preserveComments: 'some'}))
+      .on('error', gutil.log)
       // Output files
       .pipe($.size({title: 'scripts:assets'}))
       .pipe($.sourcemaps.write('.'))
