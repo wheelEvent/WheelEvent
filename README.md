@@ -27,24 +27,8 @@ npm install -g gulp-cli
 npm install
 gulp serve
 ```
-Then you can use those commands :
 
-* `gulp lint` : check js code
-* `gulp images` : compress images
-* `gulp copy` : copy app/* (not sub) to dist/
-* `gulp styles` : compile and automatically prefix stylesheets
-* `gulp scripts` : -> scripts:base scripts:page scripts:assets
-* `gulp scripts:base` : Minify JavaScript scripts/*
-* `gulp scripts:page` : Minify JavaScript scripts/page/*
-* `gulp scripts:assets` : Minify JavaScript scripts/assets/*
-* `gulp html` : Scan HTML assets & optimize them
-* `gulp clean` : rm -rf .tpm dist !dist/.git
-* `gulp serve` : browserSync app + watch files for change
-* `gulp serve:dist` : browserSync app + watch files for change /!\ service-worker enabled
-* `gulp default` : -> styles lint html scripts images copy generate-service-worker
-* `gulp pagespeed` : test homepage with Google Pagespeed
-* `gulp copy-sw-scripts` : copy service worker to dist
-* `gulp generate-service-worker` : generate service-worker
+See [commands.md](https://github.com/wheelEvent/WheelEvent/blob/master/docs/commands.md) file to see all executable commands.
 
 # Contributing
 
@@ -74,7 +58,7 @@ The [issue tracker](https://github.com/Dogfalo/materialize/issues) is the prefer
 
 * Please **do not** open issues without clearly stating the problem and desired result. [See the bug reports section](#bug-reports) for more information on creating effective issues.
 
-* Please **do** [search for duplicate or closed issues](https://github.com/Dogfalo/materialize/issues?utf8=%E2%9C%93&q=is%3Aissue). Duplicate issues will be closed.
+* Please **do** [search for duplicate or closed issues](https://github.com/wheelEvent/WheelEvent/issues?utf8=%E2%9C%93&q=is%3Aissue). Duplicate issues will be closed.
 
 * Please **close your own issue** once it is resolved.
 
