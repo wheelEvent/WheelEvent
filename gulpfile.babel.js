@@ -17,25 +17,6 @@
  *
  */
 
-/**
- * gulp lint : check js code
- * gulp images : compress images
- * gulp copy : copy app/* (not sub) to dist/
- * gulp styles : compile and automatically prefix stylesheets
- * gulp scripts : -> scripts:base scripts:page scripts:assets
- * gulp scripts:base : Minify JavaScript scripts/*
- * gulp scripts:page : Minify JavaScript scripts/page/*
- * gulp scripts:assets : Minify JavaScript scripts/assets/*
- * gulp html : Scan HTML assets & optimize them
- * gulp clean : rm -rf .tpm dist !dist/.git
- * gulp serve : browserSync app + watch files for change
- * gulp serve:dist : browserSync app + watch files for change /!\ service-worker enabled
- * gulp default : -> styles lint html scripts images copy generate-service-worker
- * gulp pagespeed : test homepage with Google Pagespeed
- * gulp copy-sw-scripts : copy service worker to dist
- * gulp generate-service-worker : generate service-worker
- */
-
 'use strict';
 
 // This gulpfile makes use of new JavaScript features.
@@ -55,8 +36,10 @@ import pkg from './package.json';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
-var es = require('event-stream');
-var gutil = require('gulp-util');
+
+function reportError (error) {
+    console.log(error.toString());
+}
 
 // Lint JavaScript
 gulp.task('lint', () =>
@@ -122,59 +105,72 @@ gulp.task('styles', () => {
     .pipe(gulp.dest('dist/styles'))
     .pipe(gulp.dest('.tmp/styles'));
 });
-
-// Minify JavaScript.
-gulp.task('scripts', ['scripts:base', 'scripts:page', 'scripts:assets']);
-gulp.task('scripts:base', () => {
-    return gulp.src([
+gulp.task('scripts', cb =>
+  runSequence(
+    ["scripts:base", "scripts:assets", "scripts:page"],
+    cb
+  )
+);
+// Minify JavaScript. Optionally transpiles ES2015 code to ES5.
+gulp.task('scripts:base', () =>
+    gulp.src([
       './app/scripts/main.js',
       './app/scripts/get.js',
       './app/scripts/push.js',
-      './app/scripts/app.js',
+      './app/scripts/app.js'
     ])
+      .pipe($.newer('.tmp/scripts'))
       .pipe($.sourcemaps.init())
       .pipe($.babel())
-      //.pipe($.sourcemaps.write())
+      .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
       .pipe($.uglify({preserveComments: 'some'}))
-      .on('error', gutil.log)
+      .on('error', reportError)
       // Output files
       .pipe($.size({title: 'scripts:base'}))
       .pipe($.sourcemaps.write('.'))
       .pipe(gulp.dest('dist/scripts'))
-});
-gulp.task('scripts:page', () => {
-    return gulp.src([
-      './app/scripts/page/myAccount.js'
+      .pipe(gulp.dest('.tmp/scripts'))
+);
+// Minify JavaScript. Optionally transpiles ES2015 code to ES5.
+gulp.task('scripts:assets', () =>
+    gulp.src([
+      './app/scripts/assets/lastEvent.js',
     ])
+      .pipe($.newer('.tmp/scripts/assets'))
       .pipe($.sourcemaps.init())
       .pipe($.babel())
-      //.pipe($.sourcemaps.write())
-      .pipe(gulp.dest('.tmp/scripts/page'))
-      .pipe($.uglify({preserveComments: 'some'}))
-      .on('error', gutil.log)
-      // Output files
-      .pipe($.size({title: 'scripts:page'}))
-      .pipe($.sourcemaps.write('.'))
-      .pipe(gulp.dest('dist/scripts/page'))
-});
-gulp.task('scripts:assets', () => {
-    return gulp.src([
-      './app/scripts/assets/lastEvent.js'
-    ])
-      .pipe($.sourcemaps.init())
-      .pipe($.babel())
-      //.pipe($.sourcemaps.write())
+      .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts/assets'))
       .pipe($.uglify({preserveComments: 'some'}))
-      .on('error', gutil.log)
+      .on('error', reportError)
       // Output files
       .pipe($.size({title: 'scripts:assets'}))
       .pipe($.sourcemaps.write('.'))
       .pipe(gulp.dest('dist/scripts/assets'))
-});
+      .pipe(gulp.dest('.tmp/scripts/assets'))
+);
 
-// Scan HTML assets & optimize them
+// Minify JavaScript. Optionally transpiles ES2015 code to ES5.
+gulp.task('scripts:page', () =>
+    gulp.src([
+      './app/scripts/page/myAccount.js',
+    ])
+      .pipe($.newer('.tmp/scripts/page'))
+      .pipe($.sourcemaps.init())
+      .pipe($.babel())
+      .pipe($.sourcemaps.write())
+      .pipe(gulp.dest('.tmp/scripts/page'))
+      .pipe($.uglify({preserveComments: 'some'}))
+      .on('error', reportError)
+      // Output files
+      .pipe($.size({title: 'scripts:page'}))
+      .pipe($.sourcemaps.write('.'))
+      .pipe(gulp.dest('dist/scripts/page'))
+      .pipe(gulp.dest('.tmp/scripts/page'))
+);
+
+// Scan your HTML for assets & optimize them
 gulp.task('html', () => {
   return gulp.src('app/**/*.html')
     .pipe($.useref({
@@ -194,7 +190,6 @@ gulp.task('html', () => {
       removeStyleLinkTypeAttributes: true,
       removeOptionalTags: true
     })))
-    .on('error', gutil.log)
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
     .pipe(gulp.dest('dist'));
@@ -254,9 +249,8 @@ gulp.task('default', ['clean'], cb =>
 // Run PageSpeed Insights
 gulp.task('pagespeed', cb =>
   // Update the below URL to the public URL of your site
-  pagespeed('wheelevent-94cfb.firebaseapp.com', {
-    strategy: 'mobile',
-    threshold: 60 // default to 75
+  pagespeed('example.com', {
+    strategy: 'mobile'
     // By default we use the PageSpeed Insights free (no API key) tier.
     // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
     // key: 'YOUR_API_KEY'

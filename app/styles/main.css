@@ -1,346 +1,213 @@
 /**
- **********************************
- * LOADER
- **********************************
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-#loader-wrapper {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1000 !important;
-}
-#loader {
-	display: block;
-	position: relative;
-	left: 50%;
-	top: 50%;
-	width: 150px;
-	height: 150px;
-	margin: -75px 0 0 -75px;
-	border-radius: 50%;
-	border: 3px solid transparent;
-	border-top-color: #3498db;
 
-	-webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-	animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
-
-	z-index: 1001;
-}
-
-	#loader:before {
-		content: "";
-		position: absolute;
-		top: 5px;
-		left: 5px;
-		right: 5px;
-		bottom: 5px;
-		border-radius: 50%;
-		border: 3px solid transparent;
-		border-top-color: #e74c3c;
-
-		-webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-		animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
-	}
-
-	#loader:after {
-		content: "";
-		position: absolute;
-		top: 15px;
-		left: 15px;
-		right: 15px;
-		bottom: 15px;
-		border-radius: 50%;
-		border: 3px solid transparent;
-		border-top-color: #f9c922;
-
-		-webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-		  animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
-	}
-
-	@-webkit-keyframes spin {
-		0%   {
-			-webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: rotate(0deg);  /* IE 9 */
-			transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
-		}
-		100% {
-			-webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: rotate(360deg);  /* IE 9 */
-			transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
-		}
-	}
-	@keyframes spin {
-		0%   {
-			-webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: rotate(0deg);  /* IE 9 */
-			transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
-		}
-		100% {
-			-webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: rotate(360deg);  /* IE 9 */
-			transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
-		}
-	}
-
-	#loader-wrapper .loader-section {
-		position: fixed;
-		top: 0;
-		width: 51%;
-		height: 100%;
-		background: #222222;
-		z-index: 1000;
-		-webkit-transform: translateX(0);  /* Chrome, Opera 15+, Safari 3.1+ */
-		-ms-transform: translateX(0);  /* IE 9 */
-		transform: translateX(0);  /* Firefox 16+, IE 10+, Opera */
-	}
-
-	#loader-wrapper .loader-section.section-left {
-		left: 0;
-	}
-
-	#loader-wrapper .loader-section.section-right {
-		right: 0;
-	}
-
-	/* Loaded */
-	.loaded #loader-wrapper .loader-section.section-left {
-		-webkit-transform: translateX(-100%);  /* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: translateX(-100%);  /* IE 9 */
-				transform: translateX(-100%);  /* Firefox 16+, IE 10+, Opera */
-
-		-webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-				transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-	}
-
-	.loaded #loader-wrapper .loader-section.section-right {
-		-webkit-transform: translateX(100%);  /* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: translateX(100%);  /* IE 9 */
-				transform: translateX(100%);  /* Firefox 16+, IE 10+, Opera */
-
--webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-		transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-	}
-
-	.loaded #loader {
-		opacity: 0;
-		-webkit-transition: all 0.3s ease-out;
-				transition: all 0.3s ease-out;
-	}
-	.loaded #loader-wrapper {
-		visibility: hidden;
-
-		-webkit-transform: translateY(-100%);  /* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: translateY(-100%);  /* IE 9 */
-				transform: translateY(-100%);  /* Firefox 16+, IE 10+, Opera */
-
-		-webkit-transition: all 0.3s 1s ease-out;
-				transition: all 0.3s 1s ease-out;
-	}
-
-	/* JavaScript Turned Off */
-	.no-js #loader-wrapper {
-		display: none;
-	}
-	.no-js h1 {
-		color: #222222;
-	}
-
-	#content {
-		margin: 0 auto;
-		padding-bottom: 50px;
-		width: 80%;
-		max-width: 978px;
-	}
-/**
- * so footer stay on bottom & main takes all spaces
+/*
+Note: any .css or .scss files included in the 'styles' directory
+will be correctly compiled during `gulp serve` and `gulp`
  */
-body {
+
+html, body {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.mdl-demo .mdl-layout__header-row {
+  padding-left: 40px;
+}
+.mdl-demo .mdl-layout.is-small-screen .mdl-layout__header-row h3 {
+  font-size: inherit;
+}
+.mdl-demo .mdl-layout__tab-bar-button {
+  display: none;
+}
+.mdl-demo .mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
+  display: none;
+}
+.mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar,
+.mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar-container {
+  overflow: visible;
+}
+.mdl-demo .mdl-layout__tab-bar-container {
+  height: 64px;
+}
+.mdl-demo .mdl-layout__tab-bar {
+  padding: 0;
+  padding-left: 16px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+.mdl-demo .mdl-layout__tab-bar .mdl-layout__tab {
+  height: 64px;
+  line-height: 64px;
+}
+.mdl-demo .mdl-layout__tab-bar .mdl-layout__tab.is-active::after {
+  background-color: white;
+  height: 4px;
+}
+.mdl-demo main > .mdl-layout__tab-panel {
+  padding: 8px;
+  padding-top: 48px;
+}
+.mdl-demo .mdl-card {
+  height: auto;
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
 }
-
-main {
-  flex: 1 0 auto;
+.mdl-demo .mdl-card > * {
+  height: auto;
 }
-
-/**
- **********************************
- * WHEEL MENU
- **********************************
- */
-
-.component {
-	position: relative;
-	margin-bottom: 3em;
-	height: 20em;
-	font-family: 'Lato', Arial, sans-serif;
+.mdl-demo .mdl-card .mdl-card__supporting-text {
+  margin: 40px;
+  flex-grow: 1;
+  padding: 0;
+  color: inherit;
+  width: calc(100% - 80px);
 }
-
-.cn-wrapper {
-	position: absolute;
-	top: 60%;
-	left: 50%;
-	z-index: 10;
-	margin-top: -13.5em;
-	margin-left: -13.5em;
-	width: 27em;
-	height: 27em;
-	border-radius: 50%;
-	background: transparent;
-	background: url(/images/tire.jpeg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-	opacity: 0;
-	transition: all .3s ease 0.3s;
-	transform: scale(0.1);
-	pointer-events: none;
-	overflow: hidden;
+.mdl-demo.mdl-demo .mdl-card__supporting-text h4 {
+  margin-top: 0;
+  margin-bottom: 20px;
 }
-
-.cn-wrapper.loading {
-    animation-name: rotate;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+.mdl-demo .mdl-card__actions {
+  margin: 0;
+  padding: 4px 40px;
+  color: inherit;
 }
-
-@keyframes rotate {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(360deg);}
+.mdl-demo .mdl-card__actions a {
+  color: #00BCD4;
+  margin: 0;
 }
-
-/*cover to prevent extra space of anchors from being clickable*/
-.cn-wrapper:after{
-  content:".";
-  display:block;
-  font-size:2em;
-  width:6.2em;
-  height:6.2em;
+.mdl-demo .mdl-card__actions a:hover,
+.mdl-demo .mdl-card__actions a:active {
+  color: inherit;
+  background-color: transparent;
+}
+.mdl-demo .mdl-card__supporting-text + .mdl-card__actions {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+.mdl-demo #add {
   position: absolute;
-  left: 50%;
-  margin-left: -3.1em;
-  top:50%;
-  margin-top: -3.1em;
-  border-radius: 50%;
-  z-index:10;
-  color: transparent;
+  right: 40px;
+  top: 36px;
+  z-index: 999;
 }
 
-.opened-nav {
-	border-radius: 50%;
-	opacity: 1;
-	transition: all .3s ease;
-	transform: scale(1);
-	pointer-events: auto;
+.mdl-demo .mdl-layout__content section:not(:last-of-type) {
+  position: relative;
+  margin-bottom: 48px;
 }
-
-.cn-wrapper li {
-	position: absolute;
-	top: 2%;
-	left: 50%;
-	overflow: hidden;
-	margin-top: -1.3em;
-	margin-left: -10em;
-	width: 10em;
-	height: 10em;
-	font-size: 1.5em;
-	transform: skew(30deg);
-	transform-origin: 100% 100%;
-	pointer-events: none;
+.mdl-demo section.section--center {
+  max-width: 860px;
 }
-
-.cn-wrapper li a {
-	position: absolute;
-	right: -7.25em;
-	bottom: -7.25em;
-	display: block;
-	width: 14.5em;
-	height: 14.5em;
-	border-radius: 50%;
-/*	background: radial-gradient(transparent 35%, #000 50%);*/
-	color: #fff;
-	text-align: center;
-	text-decoration: none;
-	font-size: 1.2em;
-	line-height: 2;
-	transform: skew(-30deg) rotate(-60deg) scale(1);
-	backface-visibility: hidden;
-	pointer-events: auto;
+.mdl-demo #features section.section--center {
+  max-width: 620px;
 }
-
-.cn-wrapper li a span {
-	position: relative;
-	line-height: .8em;
-	display: block;
-	font-size: .5em;
-	font-weight: 700;
-	text-transform: uppercase;
+.mdl-demo section > header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.cn-wrapper li a:hover,
-.cn-wrapper li a:active,
-.cn-wrapper li a:focus {
-	background: radial-gradient(transparent 35%, #555 50%);
+.mdl-demo section > .section__play-btn {
+  min-height: 200px;
 }
-
-.cn-wrapper li a:focus {
-	position: fixed !important; /* fix the displacement bug in webkit browsers when using tab key */
+.mdl-demo section > header > .material-icons {
+  font-size: 3rem;
 }
-
-.opened-nav li:first-child {
-	transform: rotate(360deg) skew(30deg);
+.mdl-demo section > button {
+  position: absolute;
+  z-index: 99;
+  top: 8px;
+  right: 8px;
 }
-
-.opened-nav li:nth-child(2) {
-	transform: rotate(60deg) skew(30deg);
+.mdl-demo section .section__circle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 0;
+  flex-shrink: 1;
 }
-
-.opened-nav  li:nth-child(3) {
-	transform: rotate(120deg) skew(30deg);
+.mdl-demo section .section__text {
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding-top: 8px;
 }
-
-.opened-nav li:nth-child(4) {
-	transform: rotate(180deg) skew(30deg);
+.mdl-demo section .section__text h5 {
+  font-size: inherit;
+  margin: 0;
+  margin-bottom: 0.5em;
 }
-
-.opened-nav li:nth-child(5) {
-	transform: rotate(240deg) skew(30deg);
+.mdl-demo section .section__text a {
+  text-decoration: none;
 }
-
-.opened-nav li:nth-child(6) {
-	transform: rotate(300deg) skew(30deg);
+.mdl-demo section .section__circle-container > .section__circle-container__circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  margin: 8px 0;
 }
-
-.opened-nav  li:nth-child(4) span,
-.opened-nav  li:nth-child(5) span,
-.opened-nav  li:nth-child(6) span {
-	transform: rotate(180deg);
+.mdl-demo section.section--footer .section__circle--big {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  margin: 8px 32px;
 }
-
-@media only screen and (max-width: 480px) {
-	.component {
-		height: 25em;
-	}
-	.cn-wrapper {
-		top: 60%;
-	}
-
-	.cn-wrapper {
-		font-size: .68em;
-	}
+.mdl-demo .is-small-screen section.section--footer .section__circle--big {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin: 8px 16px;
 }
-@media only screen and (min-width: 480px) {
-	.component {
-		height: 25em;
-	}
-	.cn-wrapper {
-		top: 60%;
-	}
-	.cn-wrapper li a span {
-		top:.5em;
-	}
+.mdl-demo section.section--footer {
+  padding: 64px 0;
+  margin: 0 -8px -8px -8px;
+}
+.mdl-demo section.section--center .section__text:not(:last-child) {
+  border-bottom: 1px solid rgba(0,0,0,.13);
+}
+.mdl-demo .mdl-card .mdl-card__supporting-text > h3:first-child {
+  margin-bottom: 24px;
+}
+.mdl-demo .mdl-layout__tab-panel:not(#overview) {
+  background-color: white;
+}
+.mdl-demo #features section {
+  margin-bottom: 72px;
+}
+.mdl-demo #features h4, #features h5 {
+  margin-bottom: 16px;
+}
+.mdl-demo .toc {
+  border-left: 4px solid #C1EEF4;
+  margin: 24px;
+  padding: 0;
+  padding-left: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.mdl-demo .toc h4 {
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+.mdl-demo .toc a {
+  color: #4DD0E1;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 28px;
+  display: block;
+}
+.mdl-demo .mdl-menu__container {
+  z-index: 99;
 }
