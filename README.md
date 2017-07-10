@@ -2,7 +2,8 @@ WheelEvent
 ------
 
 [![Join the chat at https://gitter.im/WheelEvent/Lobby](https://badges.gitter.im/WheelEvent/Lobby.svg)](https://gitter.im/WheelEvent/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Stories in Ready](https://badge.waffle.io/wheelEvent/WheelEvent.png?label=ready&title=Ready)](https://waffle.io/wheelEvent/WheelEvent?utm_source=badge)
+[![Stories Ready](https://badge.waffle.io/wheelEvent/WheelEvent.png?label=ready&title=Ready)](https://waffle.io/wheelEvent/WheelEvent?utm_source=badge)
+[![Stories in Progress](https://badge.waffle.io/wheelEvent/WheelEvent.svg?label=in%20progress&title=In%20progress)](https://waffle.io/wheelEvent/WheelEvent?utm_source=badge)
 [![Travis build](https://travis-ci.org/wheelEvent/WheelEvent.svg?branch=master)](https://travis-ci.org/wheelEvent/WheelEvent)
 [Private Trello](https://trello.com/b/SlAxc35m/wheelevent)
 
