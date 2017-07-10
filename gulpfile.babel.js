@@ -56,6 +56,7 @@ import pkg from './package.json';
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 var es = require('event-stream');
+var gutil = require('gulp-util');
 
 // Lint JavaScript
 gulp.task('lint', () =>
@@ -190,6 +191,7 @@ gulp.task('html', () => {
       removeStyleLinkTypeAttributes: true,
       removeOptionalTags: true
     })))
+    .on('error', gutil.log)
     // Output files
     .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
     .pipe(gulp.dest('dist'));
