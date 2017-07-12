@@ -369,7 +369,16 @@
             // The signed-in user info.
             var socialNetworkUser = result.user;
             console.info('logged successfully', socialNetworkUser);
-            checkUserThenRedirect(socialNetworkUser);
+
+            var unsub = firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                checkUserThenRedirect(socialNetworkUser);
+              } else {
+                // @TODO faire une fonction qui affiche "désolé une erreur est survenue, blablabla"
+                wheelEvent.pageNotFound();
+              }
+              unsub();
+            });
           }).catch(function(error) {
             // @TODO faire une fonction qui affiche "désolé une erreur est survenue, blablabla"
             console.warn('logged failed', error);
@@ -457,6 +466,16 @@
         return v.toString(16);
       });
     },
+    disconnect() {
+      firebase.auth().signOut().then(function() {
+        window.Materialize.toast('Vous êtes déconnecté, redirection ...', 1500);
+        window.location.hash = '';
+      }).catch(function(error) {
+        window.Materialize.toast('Erreur lors de la déconnexion, redirection ...', 1500);
+        window.console.warn(error);
+        window.location.hash = '';
+      });
+    },
     toString() {
       // toString obfuscation
       return 'Object';
@@ -464,6 +483,7 @@
   };
   window.app = {
     init: wheelEvent.init,
-    guid: wheelEvent.guid
+    guid: wheelEvent.guid,
+    disconnect: wheelEvent.disconnect
   };
 })();
