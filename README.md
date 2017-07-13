@@ -5,6 +5,8 @@ WheelEvent
 [![Stories Ready](https://badge.waffle.io/wheelEvent/WheelEvent.png?label=ready&title=Ready)](https://waffle.io/wheelEvent/WheelEvent?utm_source=badge)
 [![Stories in Progress](https://badge.waffle.io/wheelEvent/WheelEvent.svg?label=in%20progress&title=In%20progress)](https://waffle.io/wheelEvent/WheelEvent?utm_source=badge)
 [![Travis build](https://travis-ci.org/wheelEvent/WheelEvent.svg?branch=master)](https://travis-ci.org/wheelEvent/WheelEvent)
+[![dependencies Status](https://david-dm.org/wheelEvent/WheelEvent/status.svg)](https://david-dm.org/wheelEvent/WheelEvent)
+[![devDependencies Status](https://david-dm.org/wheelEvent/WheelEvent/dev-status.svg)](https://david-dm.org/wheelEvent/WheelEvent?type=dev)
 [Private Trello](https://trello.com/b/SlAxc35m/wheelevent)
 
 ------
